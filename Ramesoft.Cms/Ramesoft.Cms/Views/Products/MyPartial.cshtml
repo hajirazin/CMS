@@ -1,0 +1,14 @@
+﻿<tr>   
+        <td>
+            <input type="text" id="[#=Id#].ProductName" name="[#=Id#].ProductName"/>
+        </td>
+        <td>
+            @Html.DropDownList("[#=Id#].CatagoryId", ViewBag.CatagoryId as IEnumerable<SelectListItem>)
+        </td>
+        <td>
+            @Html.DropDownList("[#=Id#].SubCatagoryId", ViewBag.SubCategoryId as IEnumerable<SelectListItem>)
+        </td>
+        <td>
+            @Html.DropDownList("[#=Id#].CompanyId", ViewBag.CompanyId as IEnumerable<SelectListItem>)
+        </td>
+</tr>

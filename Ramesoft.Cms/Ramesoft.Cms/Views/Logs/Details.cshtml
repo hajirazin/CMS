@@ -1,0 +1,49 @@
+﻿@model Ramesoft.Cms.Common.Entity.Log
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Log</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CreateDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreateDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.LogLevel)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LogLevel)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Message)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Message)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Exception)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Exception)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.StackTrace)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.StackTrace)
+    </div>
+</fieldset>
+<p>
+   @Html.ActionLink("Back to List", "Logs", "Home")
+</p>

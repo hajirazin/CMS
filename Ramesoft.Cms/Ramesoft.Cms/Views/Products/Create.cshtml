@@ -1,0 +1,80 @@
+﻿@using Ramesoft.Cms.Utility;
+@model Ramesoft.Cms.Common.Models.ProductList
+
+@{
+    ViewBag.Title = "Create";
+    int i = 0;
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Products</legend>
+        <table id="Products">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.Label("ProductName")
+                    </th>
+                    <th>
+                        @Html.Label("Category")
+                    </th>
+                    <th>
+                        @Html.Label("SubCategory")
+                    </th>
+                    <th>
+                        @Html.Label("Company")
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (; i < Model.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @Html.TextBoxFor(model => model[i].ProductName)
+                            @Html.HiddenFor(model => model[i].ProductId)
+                            @Html.ValidationMessageFor(model => model[i].ProductName)
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(model => model[i].CatagoryId, ViewBag.CatagoryId as IEnumerable<SelectListItem>)
+                            @Html.ValidationMessageFor(model => model[i].CatagoryId)
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(model => model[i].SubCatagoryId, ViewBag.SubCategoryId as IEnumerable<SelectListItem>)
+                            @Html.ValidationMessageFor(model => model[i].SubCatagoryId)
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(model => model[i].CompanyId, ViewBag.CompanyId as IEnumerable<SelectListItem>)
+                            @Html.ValidationMessageFor(model => model[i].CompanyId)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <p>
+            <input type="submit" value="Create" />
+            <input type="button" value="Add" id="AddProduct" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        var a = @i
+        $("#AddProduct").click(function (e) {
+            var str = '@Html.PartialList("MyPartial")'.replace(/#=Id#/g, a++);
+            $("#Products tbody").append(str);
+        });
+    </script>
+}

@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "SQL";
+}
+
+<h2>SQL</h2>
+@using (Html.BeginForm())
+{
+    <textarea id="command" name="command"></textarea>
+    <br />
+    <input type="submit" value="Execute" />
+}

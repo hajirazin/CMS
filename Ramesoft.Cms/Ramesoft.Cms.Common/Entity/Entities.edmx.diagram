@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="841dddb1a0d645beb06d09fae9e7e167" Name="Diagram1">
+        <EntityTypeShape EntityType="RamrsoftCMSModel.Category" Width="1.5" PointX="7.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="RamrsoftCMSModel.Company" Width="1.5" PointX="3" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="RamrsoftCMSModel.History" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="RamrsoftCMSModel.Product" Width="1.5" PointX="5.25" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="RamrsoftCMSModel.SubCategory" Width="1.5" PointX="10" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="RamrsoftCMSModel.UserProfile" Width="1.5" PointX="3" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="RamrsoftCMSModel.webpages_Membership" Width="1.5" PointX="7.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="RamrsoftCMSModel.webpages_OAuthMembership" Width="1.5" PointX="7.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="RamrsoftCMSModel.webpages_Roles" Width="1.5" PointX="0.75" PointY="1.75" IsExpanded="true" />
+        <AssociationConnector Association="RamrsoftCMSModel.FK_SubCategory_Category" ManuallyRouted="false" />
+        <AssociationConnector Association="RamrsoftCMSModel.FK_History_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="RamrsoftCMSModel.FK_Product_ToCompany" ManuallyRouted="false" />
+        <AssociationConnector Association="RamrsoftCMSModel.FK_History_User" ManuallyRouted="false" />
+        <AssociationConnector Association="RamrsoftCMSModel.webpages_UsersInRoles" ManuallyRouted="false" />
+        <AssociationConnector Association="RamrsoftCMSModel.FK_Product_ToSubCategory" />
+        <EntityTypeShape EntityType="RamrsoftCMSModel.Log" Width="1.5" PointX="0.75" PointY="8.75" />
+        <AssociationConnector Association="RamrsoftCMSModel.FK_Log_ToLog" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

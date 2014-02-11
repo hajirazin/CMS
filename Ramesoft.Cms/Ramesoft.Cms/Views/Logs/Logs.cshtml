@@ -1,0 +1,103 @@
+﻿@model List<Ramesoft.Cms.Common.Entity.Log>
+
+@{
+    ViewBag.Title = "Logs";
+    decimal lastPage = Model.Count / 5;
+}
+
+<h2>Logs</h2>
+
+<table id="Logs" class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model[0].CreateDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Message)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].Exception)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Take(5))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Message)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Exception)
+                </td>
+                <td>
+                    @Html.ActionLink(linkText: "Details", actionName: "Details", controllerName: "Logs", routeValues: new { logId = item.LogId }, htmlAttributes: null)
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+<pre>
+<a href="javascript:FirstPage();">First    </a><a href="javascript:PrevPage();">Prev    </a><a href="javascript:NextPage();">Next    </a><a href="javascript:LastPage();">Last    </a></pre>
+<script type="text/javascript">
+    var pageNumber = 1;
+    var lastPage = @(lastPage)
+    function FirstPage() {
+        if (pageNumber == 1) {
+            return;
+        }
+
+        SetLogsData(1);
+    }
+    function PrevPage() {
+        if (pageNumber == 1) {
+            return;
+        }
+
+        SetLogsData(pageNumber - 1);
+    }
+    function NextPage() {
+        if (pageNumber == lastPage) {
+            return;
+        }
+
+        SetLogsData(pageNumber + 1);
+    }
+    function LastPage() {
+        if (pageNumber == lastPage) {
+            return;
+        }
+
+        SetLogsData(lastPage);
+    }
+
+    function SetLogsData(page) {
+        pageNumber = page;
+        $.ajax({
+            url: "/Logs/GetLogs?pageNumber=" + pageNumber,
+            type: "POST",
+            success: function (data) {
+                var str = "";
+                for (var index in data) {
+                    var log = data[index];
+                    str = str +
+                        "<tr>" +
+                        "<td>" + log.CreateDate + "</td>" +
+                        "<td>" + log.Message + "</td>" +
+                        "<td>" + log.Exception + "</td>" +
+                        "<td>" + "<a href='/Logs/Details?logId=" + log.LogId + "'>Details</a>" + "</td>" +
+                        "</tr>";
+                }
+
+                $("table#Logs tbody").html(str);
+            }
+        });
+        
+    }
+</script>

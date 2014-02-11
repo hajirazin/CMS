@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Ramesoft.Cms.Common.Models.ProductModel>
+
+@{
+    ViewBag.Title = "Products";
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+<h2>Products</h2>
+
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SubCatagoryName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CatagoryName)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProductName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SubCatagoryName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CompanyName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CatagoryName)
+        </td>
+    </tr>
+}
+
+</table>
