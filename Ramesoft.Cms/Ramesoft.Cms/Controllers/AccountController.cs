@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AccountController.cs" company="">
-//   
+// <copyright file="AccountController.cs" company="rs">
+//   rs
 // </copyright>
 // <summary>
 //   The account controller.
@@ -15,8 +15,6 @@ namespace Ramesoft.Cms.Controllers
     using System.Transactions;
     using System.Web.Mvc;
     using System.Web.Security;
-
-    using DotNetOpenAuth.AspNet;
 
     using Microsoft.Web.WebPages.OAuth;
 
@@ -41,17 +39,17 @@ namespace Ramesoft.Cms.Controllers
             /// <summary>
             /// The change password success.
             /// </summary>
-            ChangePasswordSuccess, 
+            ChangePasswordSuccess,
 
             /// <summary>
             /// The set password success.
             /// </summary>
-            SetPasswordSuccess, 
+            SetPasswordSuccess,
 
             /// <summary>
             /// The remove login success.
             /// </summary>
-            RemoveLoginSuccess, 
+            RemoveLoginSuccess,
         }
 
         #endregion
@@ -75,25 +73,24 @@ namespace Ramesoft.Cms.Controllers
         public ActionResult Disassociate(string provider, string providerUserId)
         {
             string ownerAccount = OAuthWebSecurity.GetUserName(provider, providerUserId);
-            ManageMessageId? message = null;
+            ManageMessageId? message;
 
             // Only disassociate the account if the currently logged in user is the owner
             if (ownerAccount != this.User.Identity.Name)
             {
-                return this.RedirectToAction("Manage", new { Message = message });
+                return this.RedirectToAction("Manage", new { Message = (ManageMessageId?)null });
             }
 
             // Use a transaction to prevent the user from deleting their last login credential
             using (
                 var scope = new TransactionScope(
-                    TransactionScopeOption.Required, 
+                    TransactionScopeOption.Required,
                     new TransactionOptions { IsolationLevel = IsolationLevel.Serializable }))
             {
-                var hasLocalAccount =
-                    OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(this.User.Identity.Name));
+                var hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(this.User.Identity.Name));
                 if (!hasLocalAccount && OAuthWebSecurity.GetAccountsFromUserName(this.User.Identity.Name).Count <= 1)
                 {
-                    return this.RedirectToAction("Manage", new { Message = message });
+                    return this.RedirectToAction("Manage", new { Message = (ManageMessageId?)null });
                 }
 
                 OAuthWebSecurity.DeleteAccount(provider, providerUserId);
@@ -122,7 +119,7 @@ namespace Ramesoft.Cms.Controllers
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
             return new ExternalLoginResult(
-                provider, 
+                provider,
                 this.Url.Action("ExternalLoginCallback", new { ReturnUrl = returnUrl }));
         }
 
@@ -163,7 +160,7 @@ namespace Ramesoft.Cms.Controllers
             this.ViewBag.ProviderDisplayName = OAuthWebSecurity.GetOAuthClientData(result.Provider).DisplayName;
             this.ViewBag.ReturnUrl = returnUrl;
             return this.View(
-                "ExternalLoginConfirmation", 
+                "ExternalLoginConfirmation",
                 new RegisterExternalLoginModel { UserName = result.UserName, ExternalLoginData = loginData });
         }
 
@@ -184,13 +181,13 @@ namespace Ramesoft.Cms.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ExternalLoginConfirmation(RegisterExternalLoginModel model, string returnUrl)
         {
-            string provider = null;
-            string providerUserId = null;
+            string provider;
+            string providerUserId;
 
             if (this.User.Identity.IsAuthenticated
                 || !OAuthWebSecurity.TryDeserializeProviderUserId(
-                    model.ExternalLoginData, 
-                    out provider, 
+                    model.ExternalLoginData,
+                    out provider,
                     out providerUserId))
             {
                 return this.RedirectToAction("Manage");
@@ -201,8 +198,7 @@ namespace Ramesoft.Cms.Controllers
                 // Insert a new user into the database
                 using (var db = new UsersContext())
                 {
-                    var user =
-                        db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == model.UserName.ToLower());
+                    var user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == model.UserName.ToLower());
 
                     // Check if user already exists
                     if (user == null)
@@ -218,7 +214,7 @@ namespace Ramesoft.Cms.Controllers
                     }
 
                     this.ModelState.AddModelError(
-                        "UserName", 
+                        "UserName",
                         "User name already exists. Please enter a different user name.");
                 }
             }
@@ -373,8 +369,8 @@ namespace Ramesoft.Cms.Controllers
                 try
                 {
                     changePasswordSucceeded = WebSecurity.ChangePassword(
-                        this.User.Identity.Name, 
-                        model.OldPassword, 
+                        this.User.Identity.Name,
+                        model.OldPassword,
                         model.NewPassword);
                 }
                 catch (Exception)
@@ -388,7 +384,7 @@ namespace Ramesoft.Cms.Controllers
                 }
 
                 this.ModelState.AddModelError(
-                    string.Empty, 
+                    string.Empty,
                     "The current password is incorrect or the new password is invalid.");
             }
             else
@@ -415,7 +411,9 @@ namespace Ramesoft.Cms.Controllers
                 {
                     this.ModelState.AddModelError(
                         string.Empty,
-                        string.Format("Unable to create local account. An account with the name \"{0}\" may already exist.", this.User.Identity.Name));
+                        string.Format(
+                            "Unable to create local account. An account with the name \"{0}\" may already exist.",
+                            this.User.Identity.Name));
                 }
             }
 
@@ -475,7 +473,7 @@ namespace Ramesoft.Cms.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return this.View(model);
         }
 
         /// <summary>

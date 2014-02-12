@@ -9,11 +9,8 @@
 
 namespace Ramesoft.Cms.Controllers
 {
-    using System;
     using System.Linq;
     using System.Web.Mvc;
-
-    using Newtonsoft.Json.Schema;
 
     using Ramesoft.Cms.Common.DAL.Factory;
     using Ramesoft.Cms.Common.DAL.Implementation;
@@ -178,6 +175,7 @@ namespace Ramesoft.Cms.Controllers
             this.productService.Dispose();
             this.commonRepository.Dispose();
             base.Dispose(disposing);
+            this.disposed = true;
         }
 
         #endregion
