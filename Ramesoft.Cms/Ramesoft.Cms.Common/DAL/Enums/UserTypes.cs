@@ -1,31 +1,30 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="UserTypes.cs" company="rs">
-//   rs
+// <copyright file="UserTypes.cs" company="">
+//   
 // </copyright>
 // <summary>
 //   The user types.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Ramesoft.Cms.Common.DAL.Enums
 {
     /// <summary>
-    /// The user types.
+    ///     The user types.
     /// </summary>
     public enum UserTypes
     {
         /// <summary>
-        /// The super admin.
+        ///     The super admin.
         /// </summary>
         SuperAdmin, 
 
         /// <summary>
-        /// The admin.
+        ///     The admin.
         /// </summary>
         Admin, 
 
         /// <summary>
-        /// The user.
+        ///     The user.
         /// </summary>
         User
     }

@@ -7,17 +7,50 @@
     <Schema Namespace="RamrsoftCMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Category">
           <Key>
-            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="CategoryID" />
           </Key>
-          <Property Name="CategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CategoryName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CategoryID" Type="int" Nullable="false" />
+          <Property Name="CategoryName" Type="varchar" MaxLength="20" />
+          <Property Name="ParentCategory" Type="int" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
-            <PropertyRef Name="CompanyId" />
+            <PropertyRef Name="CompanyID" />
           </Key>
-          <Property Name="CompanyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CompanyName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CompanyID" Type="int" Nullable="false" />
+          <Property Name="CompanyName" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="PrimaryContact" Type="int" />
+          <Property Name="Web" Type="varchar" MaxLength="100" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="AddressTitle" Type="varchar" MaxLength="120" />
+          <Property Name="Address" Type="varchar" MaxLength="60" />
+          <Property Name="City" Type="varchar" MaxLength="30" />
+          <Property Name="Region" Type="varchar" MaxLength="20" />
+          <Property Name="PostalCode" Type="varchar" MaxLength="15" />
+          <Property Name="Country" Type="varchar" MaxLength="20" />
+          <Property Name="Phone" Type="varchar" MaxLength="25" />
+          <Property Name="Fax" Type="varchar" MaxLength="25" />
+        </EntityType>
+        <EntityType Name="ContactPerson">
+          <Key>
+            <PropertyRef Name="ContactID" />
+          </Key>
+          <Property Name="ContactID" Type="int" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="8" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" />
+          <Property Name="MiddleName" Type="varchar" MaxLength="50" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" />
+          <Property Name="CompanyID" Type="int" />
+          <Property Name="HomePhone" Type="varchar" MaxLength="25" />
+          <Property Name="MobilePhone" Type="varchar" MaxLength="25" />
+          <Property Name="AddressTitle" Type="varchar" MaxLength="120" />
+          <Property Name="Address" Type="varchar" MaxLength="60" />
+          <Property Name="City" Type="varchar" MaxLength="30" />
+          <Property Name="Region" Type="varchar" MaxLength="20" />
+          <Property Name="PostalCode" Type="varchar" MaxLength="15" />
+          <Property Name="Country" Type="varchar" MaxLength="20" />
+          <Property Name="Phone" Type="varchar" MaxLength="25" />
+          <Property Name="Fax" Type="varchar" MaxLength="25" />
         </EntityType>
         <EntityType Name="History">
           <Key>
@@ -45,22 +78,42 @@
           <Property Name="StackTrace" Type="varchar(max)" />
           <Property Name="InnerException" Type="int" />
         </EntityType>
-        <EntityType Name="Product">
+        <EntityType Name="OrderDetails">
           <Key>
-            <PropertyRef Name="ProductId" />
+            <PropertyRef Name="OrderID" />
+            <PropertyRef Name="ProductID" />
           </Key>
-          <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ProductName" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="SubCategoryId" Type="int" Nullable="false" />
-          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="OrderID" Type="int" Nullable="false" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Quantity" Type="decimal" Precision="10" Scale="4" />
         </EntityType>
-        <EntityType Name="SubCategory">
+        <EntityType Name="Orders">
           <Key>
-            <PropertyRef Name="SubCategoryId" />
+            <PropertyRef Name="OrderID" />
           </Key>
-          <Property Name="SubCategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="SubCategoryName" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="OrderID" Type="int" Nullable="false" />
+          <Property Name="CompanyID" Type="int" />
+          <Property Name="ContactID" Type="int" />
+          <Property Name="OrderDate" Type="date" Nullable="false" />
+          <Property Name="Freight" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="ShipDate" Type="date" />
+          <Property Name="ShipCompanyID" Type="int" />
+          <Property Name="Discount" Type="decimal" Precision="10" Scale="2" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="ProductName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CategoryID" Type="int" />
+          <Property Name="UnitName" Type="varchar" MaxLength="20" />
+          <Property Name="UnitScale" Type="smallint" />
+          <Property Name="InStock" Type="int" />
+          <Property Name="Price" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="DiscontinuedPrice" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Discontinued" Type="bit" />
         </EntityType>
         <EntityType Name="UserProfile">
           <Key>
@@ -109,27 +162,15 @@
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="RoleId" Type="int" Nullable="false" />
         </EntityType>
-        <Association Name="FK_History_Company">
-          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
-          <End Role="History" Type="Self.History" Multiplicity="*" />
+        <Association Name="Company_PrimaryContact">
+          <End Role="ContactPerson" Type="Self.ContactPerson" Multiplicity="0..1" />
+          <End Role="Company" Type="Self.Company" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Company">
-              <PropertyRef Name="CompanyId" />
+            <Principal Role="ContactPerson">
+              <PropertyRef Name="ContactID" />
             </Principal>
-            <Dependent Role="History">
-              <PropertyRef Name="CompanyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_History_User">
-          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="0..1" />
-          <End Role="History" Type="Self.History" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserProfile">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="History">
-              <PropertyRef Name="UserId" />
+            <Dependent Role="Company">
+              <PropertyRef Name="PrimaryContact" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -145,30 +186,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Product_ToCompany">
-          <End Role="Company" Type="Self.Company" Multiplicity="1" />
-          <End Role="Product" Type="Self.Product" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Company">
-              <PropertyRef Name="CompanyId" />
-            </Principal>
-            <Dependent Role="Product">
-              <PropertyRef Name="CompanyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Product_ToSubCategory">
-          <End Role="SubCategory" Type="Self.SubCategory" Multiplicity="1" />
-          <End Role="Product" Type="Self.Product" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SubCategory">
-              <PropertyRef Name="SubCategoryId" />
-            </Principal>
-            <Dependent Role="Product">
-              <PropertyRef Name="SubCategoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="fk_RoleId">
           <End Role="webpages_Roles" Type="Self.webpages_Roles" Multiplicity="1" />
           <End Role="webpages_UsersInRoles" Type="Self.webpages_UsersInRoles" Multiplicity="*" />
@@ -178,18 +195,6 @@
             </Principal>
             <Dependent Role="webpages_UsersInRoles">
               <PropertyRef Name="RoleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SubCategory_Category">
-          <End Role="Category" Type="Self.Category" Multiplicity="1" />
-          <End Role="SubCategory" Type="Self.SubCategory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Category">
-              <PropertyRef Name="CategoryId" />
-            </Principal>
-            <Dependent Role="SubCategory">
-              <PropertyRef Name="CategoryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -205,71 +210,283 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="OrderDetails_Order">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+          <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="OrderDetails">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="OrderDetails_Product">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="OrderDetails">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Orders_Company">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Orders_Contact">
+          <End Role="ContactPerson" Type="Self.ContactPerson" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactPerson">
+              <PropertyRef Name="ContactID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="ContactID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Orders_ShipCompany">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="ShipCompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PersonContact_Company">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="ContactPerson" Type="Self.ContactPerson" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="ContactPerson">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ProductCategories_Parent">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="Category1" Type="Self.Category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="Category1">
+              <PropertyRef Name="ParentCategory" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Products_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="RamrsoftCMSModelStoreContainer">
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ContactPerson" EntityType="Self.ContactPerson" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="History" EntityType="Self.History" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="SubCategory" EntityType="Self.SubCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderDetails" EntityType="Self.OrderDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserProfile" EntityType="Self.UserProfile" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="webpages_Membership" EntityType="Self.webpages_Membership" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="webpages_OAuthMembership" EntityType="Self.webpages_OAuthMembership" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="webpages_Roles" EntityType="Self.webpages_Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="webpages_UsersInRoles" EntityType="Self.webpages_UsersInRoles" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_History_Company" Association="Self.FK_History_Company">
+          <AssociationSet Name="Company_PrimaryContact" Association="Self.Company_PrimaryContact">
+            <End Role="ContactPerson" EntitySet="ContactPerson" />
             <End Role="Company" EntitySet="Company" />
-            <End Role="History" EntitySet="History" />
-          </AssociationSet>
-          <AssociationSet Name="FK_History_User" Association="Self.FK_History_User">
-            <End Role="UserProfile" EntitySet="UserProfile" />
-            <End Role="History" EntitySet="History" />
           </AssociationSet>
           <AssociationSet Name="FK_Log_ToLog" Association="Self.FK_Log_ToLog">
             <End Role="Log" EntitySet="Log" />
             <End Role="Log1" EntitySet="Log" />
           </AssociationSet>
-          <AssociationSet Name="FK_Product_ToCompany" Association="Self.FK_Product_ToCompany">
-            <End Role="Company" EntitySet="Company" />
-            <End Role="Product" EntitySet="Product" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Product_ToSubCategory" Association="Self.FK_Product_ToSubCategory">
-            <End Role="SubCategory" EntitySet="SubCategory" />
-            <End Role="Product" EntitySet="Product" />
-          </AssociationSet>
           <AssociationSet Name="fk_RoleId" Association="Self.fk_RoleId">
             <End Role="webpages_Roles" EntitySet="webpages_Roles" />
             <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK_SubCategory_Category" Association="Self.FK_SubCategory_Category">
-            <End Role="Category" EntitySet="Category" />
-            <End Role="SubCategory" EntitySet="SubCategory" />
-          </AssociationSet>
           <AssociationSet Name="fk_UserId" Association="Self.fk_UserId">
             <End Role="UserProfile" EntitySet="UserProfile" />
             <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="OrderDetails_Order" Association="Self.OrderDetails_Order">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrderDetails" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="OrderDetails_Product" Association="Self.OrderDetails_Product">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="OrderDetails" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="Orders_Company" Association="Self.Orders_Company">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="Orders_Contact" Association="Self.Orders_Contact">
+            <End Role="ContactPerson" EntitySet="ContactPerson" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="Orders_ShipCompany" Association="Self.Orders_ShipCompany">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="PersonContact_Company" Association="Self.PersonContact_Company">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="ContactPerson" EntitySet="ContactPerson" />
+          </AssociationSet>
+          <AssociationSet Name="ProductCategories_Parent" Association="Self.ProductCategories_Parent">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Category1" EntitySet="Category" />
+          </AssociationSet>
+          <AssociationSet Name="Products_Category" Association="Self.Products_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Products" EntitySet="Products" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="RamrsoftCMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="RamesoftEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Categories" EntityType="RamrsoftCMSModel.Category" />
+          <EntitySet Name="Companies" EntityType="RamrsoftCMSModel.Company" />
+          <EntitySet Name="ContactPersons" EntityType="RamrsoftCMSModel.ContactPerson" />
+          <EntitySet Name="Histories" EntityType="RamrsoftCMSModel.History" />
+          <EntitySet Name="Logs" EntityType="RamrsoftCMSModel.Log" />
+          <EntitySet Name="OrderDetails" EntityType="RamrsoftCMSModel.OrderDetail" />
+          <EntitySet Name="Orders" EntityType="RamrsoftCMSModel.Order" />
+          <EntitySet Name="Products" EntityType="RamrsoftCMSModel.Product" />
+          <EntitySet Name="UserProfiles" EntityType="RamrsoftCMSModel.UserProfile" />
+          <EntitySet Name="webpages_Membership" EntityType="RamrsoftCMSModel.webpages_Membership" />
+          <EntitySet Name="webpages_OAuthMembership" EntityType="RamrsoftCMSModel.webpages_OAuthMembership" />
+          <EntitySet Name="webpages_Roles" EntityType="RamrsoftCMSModel.webpages_Roles" />
+          <AssociationSet Name="ProductCategories_Parent" Association="RamrsoftCMSModel.ProductCategories_Parent">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Category1" EntitySet="Categories" />
+          </AssociationSet>
+          <AssociationSet Name="Products_Category" Association="RamrsoftCMSModel.Products_Category">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="Company_PrimaryContact" Association="RamrsoftCMSModel.Company_PrimaryContact">
+            <End Role="ContactPerson" EntitySet="ContactPersons" />
+            <End Role="Company" EntitySet="Companies" />
+          </AssociationSet>
+          <AssociationSet Name="Orders_Company" Association="RamrsoftCMSModel.Orders_Company">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="Orders_ShipCompany" Association="RamrsoftCMSModel.Orders_ShipCompany">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="PersonContact_Company" Association="RamrsoftCMSModel.PersonContact_Company">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="ContactPerson" EntitySet="ContactPersons" />
+          </AssociationSet>
+          <AssociationSet Name="Orders_Contact" Association="RamrsoftCMSModel.Orders_Contact">
+            <End Role="ContactPerson" EntitySet="ContactPersons" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Log_ToLog" Association="RamrsoftCMSModel.FK_Log_ToLog">
+            <End Role="Log" EntitySet="Logs" />
+            <End Role="Log1" EntitySet="Logs" />
+          </AssociationSet>
+          <AssociationSet Name="OrderDetails_Order" Association="RamrsoftCMSModel.OrderDetails_Order">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="OrderDetail" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="OrderDetails_Product" Association="RamrsoftCMSModel.OrderDetails_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="OrderDetail" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="webpages_UsersInRoles" Association="RamrsoftCMSModel.webpages_UsersInRoles">
+            <End Role="webpages_Roles" EntitySet="webpages_Roles" />
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Category">
           <Key>
-            <PropertyRef Name="CategoryId" />
+            <PropertyRef Name="CategoryID" />
           </Key>
-          <Property Name="CategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="SubCategories" Relationship="Self.FK_SubCategory_Category" FromRole="Category" ToRole="SubCategory" />
+          <Property Name="CategoryID" Type="Int32" Nullable="false" />
+          <Property Name="CategoryName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ParentCategory" Type="Int32" />
+          <NavigationProperty Name="Category1" Relationship="RamrsoftCMSModel.ProductCategories_Parent" FromRole="Category" ToRole="Category1" />
+          <NavigationProperty Name="Category2" Relationship="RamrsoftCMSModel.ProductCategories_Parent" FromRole="Category1" ToRole="Category" />
+          <NavigationProperty Name="Products" Relationship="RamrsoftCMSModel.Products_Category" FromRole="Category" ToRole="Product" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
-            <PropertyRef Name="CompanyId" />
+            <PropertyRef Name="CompanyID" />
           </Key>
-          <Property Name="CompanyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Histories" Relationship="Self.FK_History_Company" FromRole="Company" ToRole="History" />
-          <NavigationProperty Name="Products" Relationship="Self.FK_Product_ToCompany" FromRole="Company" ToRole="Product" />
+          <Property Name="CompanyID" Type="Int32" Nullable="false" />
+          <Property Name="CompanyName" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="PrimaryContact" Type="Int32" />
+          <Property Name="Web" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AddressTitle" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Region" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PostalCode" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Country" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Fax" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ContactPerson" Relationship="RamrsoftCMSModel.Company_PrimaryContact" FromRole="Company" ToRole="ContactPerson" />
+          <NavigationProperty Name="Orders" Relationship="RamrsoftCMSModel.Orders_Company" FromRole="Company" ToRole="Order" />
+          <NavigationProperty Name="Orders1" Relationship="RamrsoftCMSModel.Orders_ShipCompany" FromRole="Company" ToRole="Order" />
+          <NavigationProperty Name="ContactPersons" Relationship="RamrsoftCMSModel.PersonContact_Company" FromRole="Company" ToRole="ContactPerson" />
+        </EntityType>
+        <EntityType Name="ContactPerson">
+          <Key>
+            <PropertyRef Name="ContactID" />
+          </Key>
+          <Property Name="ContactID" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyID" Type="Int32" />
+          <Property Name="HomePhone" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="MobilePhone" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="AddressTitle" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Region" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PostalCode" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Country" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Fax" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Companies" Relationship="RamrsoftCMSModel.Company_PrimaryContact" FromRole="ContactPerson" ToRole="Company" />
+          <NavigationProperty Name="Company" Relationship="RamrsoftCMSModel.PersonContact_Company" FromRole="ContactPerson" ToRole="Company" />
+          <NavigationProperty Name="Orders" Relationship="RamrsoftCMSModel.Orders_Contact" FromRole="ContactPerson" ToRole="Order" />
         </EntityType>
         <EntityType Name="History">
           <Key>
@@ -278,182 +495,13 @@
           <Property Name="HistoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" />
           <Property Name="CompanyId" Type="Int32" />
-          <Property Name="ModuleName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ModuleName" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="PropertyName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="OldValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="NewValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="ModificationTime" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="ModificationType" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Company" Relationship="Self.FK_History_Company" FromRole="History" ToRole="Company" />
-          <NavigationProperty Name="UserProfile" Relationship="Self.FK_History_User" FromRole="History" ToRole="UserProfile" />
+          <Property Name="ModificationType" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
-        <EntityType Name="Product">
-          <Key>
-            <PropertyRef Name="ProductId" />
-          </Key>
-          <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProductName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="SubCategoryId" Type="Int32" Nullable="false" />
-          <Property Name="CompanyId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Company" Relationship="Self.FK_Product_ToCompany" FromRole="Product" ToRole="Company" />
-          <NavigationProperty Name="SubCategory" Relationship="RamrsoftCMSModel.FK_Product_ToSubCategory" FromRole="Product" ToRole="SubCategory" />
-        </EntityType>
-        <EntityType Name="SubCategory">
-          <Key>
-            <PropertyRef Name="SubCategoryId" />
-          </Key>
-          <Property Name="SubCategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SubCategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CategoryId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Category" Relationship="Self.FK_SubCategory_Category" FromRole="SubCategory" ToRole="Category" />
-          <NavigationProperty Name="Products" Relationship="RamrsoftCMSModel.FK_Product_ToSubCategory" FromRole="SubCategory" ToRole="Product" />
-        </EntityType>
-        <EntityType Name="UserProfile">
-          <Key>
-            <PropertyRef Name="UserId" />
-          </Key>
-          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="String" MaxLength="56" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Histories" Relationship="Self.FK_History_User" FromRole="UserProfile" ToRole="History" />
-          <NavigationProperty Name="webpages_Roles" Relationship="Self.webpages_UsersInRoles" FromRole="UserProfile" ToRole="webpages_Roles" />
-        </EntityType>
-        <EntityType Name="webpages_Membership">
-          <Key>
-            <PropertyRef Name="UserId" />
-          </Key>
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" />
-          <Property Name="ConfirmationToken" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="IsConfirmed" Type="Boolean" />
-          <Property Name="LastPasswordFailureDate" Type="DateTime" Precision="3" />
-          <Property Name="PasswordFailuresSinceLastSuccess" Type="Int32" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PasswordChangedDate" Type="DateTime" Precision="3" />
-          <Property Name="PasswordSalt" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PasswordVerificationToken" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="PasswordVerificationTokenExpirationDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="webpages_OAuthMembership">
-          <Key>
-            <PropertyRef Name="Provider" />
-            <PropertyRef Name="ProviderUserId" />
-          </Key>
-          <Property Name="Provider" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ProviderUserId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="webpages_Roles">
-          <Key>
-            <PropertyRef Name="RoleId" />
-          </Key>
-          <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RoleName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="UserProfiles" Relationship="Self.webpages_UsersInRoles" FromRole="webpages_Roles" ToRole="UserProfile" />
-        </EntityType>
-        <Association Name="FK_SubCategory_Category">
-          <End Role="Category" Type="Self.Category" Multiplicity="1" />
-          <End Role="SubCategory" Type="Self.SubCategory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Category">
-              <PropertyRef Name="CategoryId" />
-            </Principal>
-            <Dependent Role="SubCategory">
-              <PropertyRef Name="CategoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_History_Company">
-          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
-          <End Role="History" Type="Self.History" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Company">
-              <PropertyRef Name="CompanyId" />
-            </Principal>
-            <Dependent Role="History">
-              <PropertyRef Name="CompanyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Product_ToCompany">
-          <End Role="Company" Type="Self.Company" Multiplicity="1" />
-          <End Role="Product" Type="Self.Product" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Company">
-              <PropertyRef Name="CompanyId" />
-            </Principal>
-            <Dependent Role="Product">
-              <PropertyRef Name="CompanyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_History_User">
-          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="0..1" />
-          <End Role="History" Type="Self.History" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserProfile">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="History">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="webpages_UsersInRoles">
-          <End Role="webpages_Roles" Type="Self.webpages_Roles" Multiplicity="*" />
-          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="*" />
-        </Association>
-        <EntityContainer Name="RamesoftEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Categories" EntityType="Self.Category" />
-          <EntitySet Name="Companies" EntityType="Self.Company" />
-          <EntitySet Name="Histories" EntityType="Self.History" />
-          <EntitySet Name="Products" EntityType="Self.Product" />
-          <EntitySet Name="SubCategories" EntityType="Self.SubCategory" />
-          <EntitySet Name="UserProfiles" EntityType="Self.UserProfile" />
-          <EntitySet Name="webpages_Membership" EntityType="Self.webpages_Membership" />
-          <EntitySet Name="webpages_OAuthMembership" EntityType="Self.webpages_OAuthMembership" />
-          <EntitySet Name="webpages_Roles" EntityType="Self.webpages_Roles" />
-          <AssociationSet Name="FK_SubCategory_Category" Association="Self.FK_SubCategory_Category">
-            <End Role="Category" EntitySet="Categories" />
-            <End Role="SubCategory" EntitySet="SubCategories" />
-          </AssociationSet>
-          <AssociationSet Name="FK_History_Company" Association="Self.FK_History_Company">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="History" EntitySet="Histories" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Product_ToCompany" Association="Self.FK_Product_ToCompany">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="Product" EntitySet="Products" />
-          </AssociationSet>
-          <AssociationSet Name="FK_History_User" Association="Self.FK_History_User">
-            <End Role="UserProfile" EntitySet="UserProfiles" />
-            <End Role="History" EntitySet="Histories" />
-          </AssociationSet>
-          <AssociationSet Name="webpages_UsersInRoles" Association="Self.webpages_UsersInRoles">
-            <End Role="webpages_Roles" EntitySet="webpages_Roles" />
-            <End Role="UserProfile" EntitySet="UserProfiles" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Product_ToSubCategory" Association="RamrsoftCMSModel.FK_Product_ToSubCategory">
-            <End Role="SubCategory" EntitySet="SubCategories" />
-            <End Role="Product" EntitySet="Products" />
-          </AssociationSet>
-          <EntitySet Name="Logs" EntityType="RamrsoftCMSModel.Log" />
-          <AssociationSet Name="FK_Log_ToLog" Association="RamrsoftCMSModel.FK_Log_ToLog">
-            <End Role="Log" EntitySet="Logs" />
-            <End Role="Log1" EntitySet="Logs" />
-          </AssociationSet>
-        </EntityContainer>
-        <Association Name="FK_Product_ToSubCategory">
-          <End Type="RamrsoftCMSModel.SubCategory" Role="SubCategory" Multiplicity="1" />
-          <End Type="RamrsoftCMSModel.Product" Role="Product" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SubCategory">
-              <PropertyRef Name="SubCategoryId" />
-            </Principal>
-            <Dependent Role="Product">
-              <PropertyRef Name="SubCategoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Log">
           <Key>
             <PropertyRef Name="LogId" />
@@ -468,6 +516,176 @@
           <NavigationProperty Name="Log1" Relationship="RamrsoftCMSModel.FK_Log_ToLog" FromRole="Log" ToRole="Log1" />
           <NavigationProperty Name="Log2" Relationship="RamrsoftCMSModel.FK_Log_ToLog" FromRole="Log1" ToRole="Log" />
         </EntityType>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="OrderID" />
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="OrderID" Type="Int32" Nullable="false" />
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Quantity" Type="Decimal" Precision="10" Scale="4" />
+          <NavigationProperty Name="Order" Relationship="RamrsoftCMSModel.OrderDetails_Order" FromRole="OrderDetail" ToRole="Order" />
+          <NavigationProperty Name="Product" Relationship="RamrsoftCMSModel.OrderDetails_Product" FromRole="OrderDetail" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="Int32" Nullable="false" />
+          <Property Name="CompanyID" Type="Int32" />
+          <Property Name="ContactID" Type="Int32" />
+          <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Freight" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ShipDate" Type="DateTime" Precision="0" />
+          <Property Name="ShipCompanyID" Type="Int32" />
+          <Property Name="Discount" Type="Decimal" Precision="10" Scale="2" />
+          <NavigationProperty Name="Company" Relationship="RamrsoftCMSModel.Orders_Company" FromRole="Order" ToRole="Company" />
+          <NavigationProperty Name="Company1" Relationship="RamrsoftCMSModel.Orders_ShipCompany" FromRole="Order" ToRole="Company" />
+          <NavigationProperty Name="ContactPerson" Relationship="RamrsoftCMSModel.Orders_Contact" FromRole="Order" ToRole="ContactPerson" />
+          <NavigationProperty Name="OrderDetails" Relationship="RamrsoftCMSModel.OrderDetails_Order" FromRole="Order" ToRole="OrderDetail" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="ProductName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CategoryID" Type="Int32" />
+          <Property Name="UnitName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UnitScale" Type="Int16" />
+          <Property Name="InStock" Type="Int32" />
+          <Property Name="Price" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="DiscontinuedPrice" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Discontinued" Type="Boolean" />
+          <NavigationProperty Name="Category" Relationship="RamrsoftCMSModel.Products_Category" FromRole="Product" ToRole="Category" />
+          <NavigationProperty Name="OrderDetails" Relationship="RamrsoftCMSModel.OrderDetails_Product" FromRole="Product" ToRole="OrderDetail" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="56" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="webpages_Roles" Relationship="RamrsoftCMSModel.webpages_UsersInRoles" FromRole="UserProfile" ToRole="webpages_Roles" />
+        </EntityType>
+        <EntityType Name="webpages_Membership">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="ConfirmationToken" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="IsConfirmed" Type="Boolean" />
+          <Property Name="LastPasswordFailureDate" Type="DateTime" Precision="3" />
+          <Property Name="PasswordFailuresSinceLastSuccess" Type="Int32" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordChangedDate" Type="DateTime" Precision="3" />
+          <Property Name="PasswordSalt" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordVerificationToken" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordVerificationTokenExpirationDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="webpages_OAuthMembership">
+          <Key>
+            <PropertyRef Name="Provider" />
+            <PropertyRef Name="ProviderUserId" />
+          </Key>
+          <Property Name="Provider" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderUserId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="webpages_Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UserProfiles" Relationship="RamrsoftCMSModel.webpages_UsersInRoles" FromRole="webpages_Roles" ToRole="UserProfile" />
+        </EntityType>
+        <Association Name="ProductCategories_Parent">
+          <End Type="RamrsoftCMSModel.Category" Role="Category" Multiplicity="0..1" />
+          <End Type="RamrsoftCMSModel.Category" Role="Category1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="Category1">
+              <PropertyRef Name="ParentCategory" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Products_Category">
+          <End Type="RamrsoftCMSModel.Category" Role="Category" Multiplicity="0..1" />
+          <End Type="RamrsoftCMSModel.Product" Role="Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Company_PrimaryContact">
+          <End Type="RamrsoftCMSModel.ContactPerson" Role="ContactPerson" Multiplicity="0..1" />
+          <End Type="RamrsoftCMSModel.Company" Role="Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactPerson">
+              <PropertyRef Name="ContactID" />
+            </Principal>
+            <Dependent Role="Company">
+              <PropertyRef Name="PrimaryContact" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Orders_Company">
+          <End Type="RamrsoftCMSModel.Company" Role="Company" Multiplicity="0..1" />
+          <End Type="RamrsoftCMSModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Orders_ShipCompany">
+          <End Type="RamrsoftCMSModel.Company" Role="Company" Multiplicity="0..1" />
+          <End Type="RamrsoftCMSModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="ShipCompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PersonContact_Company">
+          <End Type="RamrsoftCMSModel.Company" Role="Company" Multiplicity="0..1" />
+          <End Type="RamrsoftCMSModel.ContactPerson" Role="ContactPerson" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="ContactPerson">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Orders_Contact">
+          <End Type="RamrsoftCMSModel.ContactPerson" Role="ContactPerson" Multiplicity="0..1" />
+          <End Type="RamrsoftCMSModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactPerson">
+              <PropertyRef Name="ContactID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="ContactID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Log_ToLog">
           <End Type="RamrsoftCMSModel.Log" Role="Log" Multiplicity="0..1" />
           <End Type="RamrsoftCMSModel.Log" Role="Log1" Multiplicity="*" />
@@ -480,7 +698,35 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <Association Name="OrderDetails_Order">
+          <End Type="RamrsoftCMSModel.Order" Role="Order" Multiplicity="1" />
+          <End Type="RamrsoftCMSModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="OrderDetails_Product">
+          <End Type="RamrsoftCMSModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="RamrsoftCMSModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="webpages_UsersInRoles">
+          <End Type="RamrsoftCMSModel.webpages_Roles" Role="webpages_Roles" Multiplicity="*" />
+          <End Type="RamrsoftCMSModel.UserProfile" Role="UserProfile" Multiplicity="*" />
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -489,103 +735,68 @@
           <EntitySetMapping Name="Categories">
             <EntityTypeMapping TypeName="RamrsoftCMSModel.Category">
               <MappingFragment StoreEntitySet="Category">
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="ParentCategory" ColumnName="ParentCategory" />
                 <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Companies">
             <EntityTypeMapping TypeName="RamrsoftCMSModel.Company">
               <MappingFragment StoreEntitySet="Company">
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="AddressTitle" ColumnName="AddressTitle" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Web" ColumnName="Web" />
+                <ScalarProperty Name="PrimaryContact" ColumnName="PrimaryContact" />
                 <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ContactPersons">
+            <EntityTypeMapping TypeName="RamrsoftCMSModel.ContactPerson">
+              <MappingFragment StoreEntitySet="ContactPerson">
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="AddressTitle" ColumnName="AddressTitle" />
+                <ScalarProperty Name="MobilePhone" ColumnName="MobilePhone" />
+                <ScalarProperty Name="HomePhone" ColumnName="HomePhone" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ContactID" ColumnName="ContactID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Histories">
             <EntityTypeMapping TypeName="RamrsoftCMSModel.History">
               <MappingFragment StoreEntitySet="History">
-                <ScalarProperty Name="HistoryId" ColumnName="HistoryId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="ModuleName" ColumnName="ModuleName" />
-                <ScalarProperty Name="PropertyName" ColumnName="PropertyName" />
-                <ScalarProperty Name="OldValue" ColumnName="OldValue" />
-                <ScalarProperty Name="NewValue" ColumnName="NewValue" />
-                <ScalarProperty Name="ModificationTime" ColumnName="ModificationTime" />
                 <ScalarProperty Name="ModificationType" ColumnName="ModificationType" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Products">
-            <EntityTypeMapping TypeName="RamrsoftCMSModel.Product">
-              <MappingFragment StoreEntitySet="Product">
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
-                <ScalarProperty Name="SubCategoryId" ColumnName="SubCategoryId" />
+                <ScalarProperty Name="ModificationTime" ColumnName="ModificationTime" />
+                <ScalarProperty Name="NewValue" ColumnName="NewValue" />
+                <ScalarProperty Name="OldValue" ColumnName="OldValue" />
+                <ScalarProperty Name="PropertyName" ColumnName="PropertyName" />
+                <ScalarProperty Name="ModuleName" ColumnName="ModuleName" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SubCategories">
-            <EntityTypeMapping TypeName="RamrsoftCMSModel.SubCategory">
-              <MappingFragment StoreEntitySet="SubCategory">
-                <ScalarProperty Name="SubCategoryId" ColumnName="SubCategoryId" />
-                <ScalarProperty Name="SubCategoryName" ColumnName="SubCategoryName" />
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserProfiles">
-            <EntityTypeMapping TypeName="RamrsoftCMSModel.UserProfile">
-              <MappingFragment StoreEntitySet="UserProfile">
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="HistoryId" ColumnName="HistoryId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="webpages_Membership">
-            <EntityTypeMapping TypeName="RamrsoftCMSModel.webpages_Membership">
-              <MappingFragment StoreEntitySet="webpages_Membership">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="ConfirmationToken" ColumnName="ConfirmationToken" />
-                <ScalarProperty Name="IsConfirmed" ColumnName="IsConfirmed" />
-                <ScalarProperty Name="LastPasswordFailureDate" ColumnName="LastPasswordFailureDate" />
-                <ScalarProperty Name="PasswordFailuresSinceLastSuccess" ColumnName="PasswordFailuresSinceLastSuccess" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="PasswordChangedDate" ColumnName="PasswordChangedDate" />
-                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
-                <ScalarProperty Name="PasswordVerificationToken" ColumnName="PasswordVerificationToken" />
-                <ScalarProperty Name="PasswordVerificationTokenExpirationDate" ColumnName="PasswordVerificationTokenExpirationDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="webpages_OAuthMembership">
-            <EntityTypeMapping TypeName="RamrsoftCMSModel.webpages_OAuthMembership">
-              <MappingFragment StoreEntitySet="webpages_OAuthMembership">
-                <ScalarProperty Name="Provider" ColumnName="Provider" />
-                <ScalarProperty Name="ProviderUserId" ColumnName="ProviderUserId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="webpages_Roles">
-            <EntityTypeMapping TypeName="RamrsoftCMSModel.webpages_Roles">
-              <MappingFragment StoreEntitySet="webpages_Roles">
-                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
-                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="webpages_UsersInRoles" TypeName="RamrsoftCMSModel.webpages_UsersInRoles" StoreEntitySet="webpages_UsersInRoles">
-            <EndProperty Name="webpages_Roles">
-              <ScalarProperty Name="RoleId" ColumnName="RoleId" />
-            </EndProperty>
-            <EndProperty Name="UserProfile">
-              <ScalarProperty Name="UserId" ColumnName="UserId" />
-            </EndProperty>
-          </AssociationSetMapping>
           <EntitySetMapping Name="Logs">
             <EntityTypeMapping TypeName="RamrsoftCMSModel.Log">
               <MappingFragment StoreEntitySet="Log">
@@ -599,6 +810,95 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="OrderDetails">
+            <EntityTypeMapping TypeName="RamrsoftCMSModel.OrderDetail">
+              <MappingFragment StoreEntitySet="OrderDetails">
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="RamrsoftCMSModel.Order">
+              <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="ShipCompanyID" ColumnName="ShipCompanyID" />
+                <ScalarProperty Name="ShipDate" ColumnName="ShipDate" />
+                <ScalarProperty Name="Freight" ColumnName="Freight" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="RamrsoftCMSModel.Product">
+              <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="Discontinued" ColumnName="Discontinued" />
+                <ScalarProperty Name="DiscontinuedPrice" ColumnName="DiscontinuedPrice" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="InStock" ColumnName="InStock" />
+                <ScalarProperty Name="UnitScale" ColumnName="UnitScale" />
+                <ScalarProperty Name="UnitName" ColumnName="UnitName" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProfiles">
+            <EntityTypeMapping TypeName="RamrsoftCMSModel.UserProfile">
+              <MappingFragment StoreEntitySet="UserProfile">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="webpages_Membership">
+            <EntityTypeMapping TypeName="RamrsoftCMSModel.webpages_Membership">
+              <MappingFragment StoreEntitySet="webpages_Membership">
+                <ScalarProperty Name="PasswordVerificationTokenExpirationDate" ColumnName="PasswordVerificationTokenExpirationDate" />
+                <ScalarProperty Name="PasswordVerificationToken" ColumnName="PasswordVerificationToken" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="PasswordChangedDate" ColumnName="PasswordChangedDate" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="PasswordFailuresSinceLastSuccess" ColumnName="PasswordFailuresSinceLastSuccess" />
+                <ScalarProperty Name="LastPasswordFailureDate" ColumnName="LastPasswordFailureDate" />
+                <ScalarProperty Name="IsConfirmed" ColumnName="IsConfirmed" />
+                <ScalarProperty Name="ConfirmationToken" ColumnName="ConfirmationToken" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="webpages_OAuthMembership">
+            <EntityTypeMapping TypeName="RamrsoftCMSModel.webpages_OAuthMembership">
+              <MappingFragment StoreEntitySet="webpages_OAuthMembership">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProviderUserId" ColumnName="ProviderUserId" />
+                <ScalarProperty Name="Provider" ColumnName="Provider" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="webpages_Roles">
+            <EntityTypeMapping TypeName="RamrsoftCMSModel.webpages_Roles">
+              <MappingFragment StoreEntitySet="webpages_Roles">
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="webpages_UsersInRoles" TypeName="RamrsoftCMSModel.webpages_UsersInRoles" StoreEntitySet="webpages_UsersInRoles">
+            <EndProperty Name="UserProfile">
+              <ScalarProperty Name="UserId" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="webpages_Roles">
+              <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

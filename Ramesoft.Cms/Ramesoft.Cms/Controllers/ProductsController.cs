@@ -1,12 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ProductsController.cs" company="">
-//   
+// <copyright file="ProductsController.cs" company="rs">
+//   rs
 // </copyright>
 // <summary>
 //   The products controller.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Ramesoft.Cms.Controllers
 {
     using System;
@@ -23,24 +22,24 @@ namespace Ramesoft.Cms.Controllers
     using Ramesoft.Cms.Utility;
 
     /// <summary>
-    /// The products controller.
+    ///     The products controller.
     /// </summary>
     public class ProductsController : Controller
     {
         #region Fields
 
         /// <summary>
-        /// The data context.
+        ///     The data context.
         /// </summary>
         private readonly EntityContext dataContext = new EntityContext();
 
         /// <summary>
-        /// The product service.
+        ///     The product service.
         /// </summary>
         private readonly IProductService productService;
 
         /// <summary>
-        /// The disposed.
+        ///     The disposed.
         /// </summary>
         private bool disposed;
 
@@ -64,21 +63,18 @@ namespace Ramesoft.Cms.Controllers
         #region Public Methods and Operators
 
         /// <summary>
-        /// The create.
+        ///     The create.
         /// </summary>
         /// <returns>
-        /// The <see cref="ActionResult"/>.
+        ///     The <see cref="ActionResult" />.
         /// </returns>
         public ActionResult Create()
         {
             this.ViewBag.CompanyId = new SelectList(this.productService.Companies, "CompanyId", "CompanyName");
-            this.ViewBag.SubCategoryId = new SelectList(
-                this.dataContext.SubCategories, 
-                "SubCategoryId", 
-                "SubCategoryName");
+            this.ViewBag.SubCategoryId = new SelectList(this.dataContext.Categories, "SubCategoryId", "SubCategoryName");
             this.ViewBag.CatagoryId =
                 new HashSet<Category>(this.dataContext.Categories).Select(
-                    c => new SelectListItem { Text = c.CategoryName, Value = c.CategoryId.ToString() });
+                    c => new SelectListItem { Text = c.CategoryName, Value = c.CategoryID.ToString() });
             var products = new ProductList(this.productService.GetProducts);
             return View(products);
         }
@@ -112,13 +108,10 @@ namespace Ramesoft.Cms.Controllers
             }
 
             this.ViewBag.CompanyId = new SelectList(this.dataContext.Companies, "CompanyId", "CompanyName");
-            this.ViewBag.SubCategoryId = new SelectList(
-                this.dataContext.SubCategories, 
-                "SubCategoryId", 
-                "SubCategoryName");
+            this.ViewBag.SubCategoryId = new SelectList(this.dataContext.Categories, "SubCategoryId", "SubCategoryName");
             this.ViewBag.CatagoryId =
                 new HashSet<Category>(this.dataContext.Categories).Select(
-                    c => new SelectListItem { Text = c.CategoryName, Value = c.CategoryId.ToString() });
+                    c => new SelectListItem { Text = c.CategoryName, Value = c.CategoryID.ToString() });
 
             return View(product);
         }
@@ -207,12 +200,12 @@ namespace Ramesoft.Cms.Controllers
                 this.productService.Companies, 
                 "CompanyId", 
                 "CompanyName", 
-                product.CompanyId);
+                product.CategoryID);
             this.ViewBag.SubCategoryId = new SelectList(
-                this.dataContext.SubCategories, 
+                this.dataContext.Categories, 
                 "SubCategoryId", 
                 "SubCategoryName", 
-                product.SubCategoryId);
+                product.CategoryID);
             return View(product);
         }
 
@@ -240,23 +233,21 @@ namespace Ramesoft.Cms.Controllers
                 this.dataContext.Companies, 
                 "CompanyId", 
                 "CompanyName", 
-                product.CompanyId);
+                product.CategoryID);
             this.ViewBag.SubCategoryId = new SelectList(
-                this.dataContext.SubCategories, 
+                this.dataContext.Categories, 
                 "SubCategoryId", 
                 "SubCategoryName", 
-                product.SubCategoryId);
+                product.CategoryID);
             return View(product);
         }
 
         /// <summary>
-        /// The index.
+        ///     The index.
         /// </summary>
         /// <returns>
-        /// The <see cref="ActionResult"/>.
+        ///     The <see cref="ActionResult" />.
         /// </returns>
-        /// <exception cref="Exception">
-        /// </exception>
         public ActionResult Index()
         {
             return this.View(this.productService.GetProducts);

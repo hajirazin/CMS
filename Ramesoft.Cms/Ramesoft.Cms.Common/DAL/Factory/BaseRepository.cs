@@ -6,7 +6,6 @@
 //   The base repository.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Ramesoft.Cms.Common.DAL.Factory
 {
     using System;
@@ -28,22 +27,22 @@ namespace Ramesoft.Cms.Common.DAL.Factory
         #region Fields
 
         /// <summary>
+        ///     The data context.
+        /// </summary>
+        internal readonly IEntityContext DataContext;
+
+        /// <summary>
         ///     The data set.
         /// </summary>
         internal readonly DbSet<T> DataSet;
 
         /// <summary>
-        /// The data context.
-        /// </summary>
-        internal readonly IEntityContext DataContext;
-
-        /// <summary>
-        /// The locker.
+        ///     The locker.
         /// </summary>
         private readonly object locker;
 
         /// <summary>
-        /// The disposed.
+        ///     The disposed.
         /// </summary>
         private bool disposed;
 
@@ -69,7 +68,7 @@ namespace Ramesoft.Cms.Common.DAL.Factory
         #region Public Properties
 
         /// <summary>
-        /// Gets the get all.
+        ///     Gets the get all.
         /// </summary>
         public virtual IQueryable<T> GetAll
         {
@@ -95,7 +94,7 @@ namespace Ramesoft.Cms.Common.DAL.Factory
         }
 
         /// <summary>
-        /// The dispose.
+        ///     The dispose.
         /// </summary>
         public void Dispose()
         {
@@ -148,7 +147,7 @@ namespace Ramesoft.Cms.Common.DAL.Factory
         }
 
         /// <summary>
-        /// The save.
+        ///     The save.
         /// </summary>
         public void Save()
         {

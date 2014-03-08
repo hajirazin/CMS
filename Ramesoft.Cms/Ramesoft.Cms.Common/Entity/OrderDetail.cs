@@ -12,18 +12,14 @@ namespace Ramesoft.Cms.Common.Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class SubCategory
+    public partial class OrderDetail
     {
-        public SubCategory()
-        {
-            this.Products = new HashSet<Product>();
-        }
+        public int OrderID { get; set; }
+        public int ProductID { get; set; }
+        public Nullable<decimal> Price { get; set; }
+        public Nullable<decimal> Quantity { get; set; }
     
-        public int SubCategoryId { get; set; }
-        public string SubCategoryName { get; set; }
-        public int CategoryId { get; set; }
-    
-        public virtual Category Category { get; set; }
-        public virtual ICollection<Product> Products { get; set; }
+        public virtual Order Order { get; set; }
+        public virtual Product Product { get; set; }
     }
 }

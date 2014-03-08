@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[History]
+﻿CREATE TABLE [old].[History]
 (
 	HistoryId       int primary key identity(1,1),
 	UserId         int , 

@@ -12,24 +12,25 @@ namespace Ramesoft.Cms.Common.Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class Product
+    public partial class Order
     {
-        public Product()
+        public Order()
         {
             this.OrderDetails = new HashSet<OrderDetail>();
         }
     
-        public int ProductID { get; set; }
-        public string ProductName { get; set; }
-        public Nullable<int> CategoryID { get; set; }
-        public string UnitName { get; set; }
-        public Nullable<short> UnitScale { get; set; }
-        public Nullable<int> InStock { get; set; }
-        public Nullable<decimal> Price { get; set; }
-        public Nullable<decimal> DiscontinuedPrice { get; set; }
-        public Nullable<bool> Discontinued { get; set; }
+        public int OrderID { get; set; }
+        public Nullable<int> CompanyID { get; set; }
+        public Nullable<int> ContactID { get; set; }
+        public System.DateTime OrderDate { get; set; }
+        public Nullable<decimal> Freight { get; set; }
+        public Nullable<System.DateTime> ShipDate { get; set; }
+        public Nullable<int> ShipCompanyID { get; set; }
+        public Nullable<decimal> Discount { get; set; }
     
-        public virtual Category Category { get; set; }
+        public virtual Company Company { get; set; }
+        public virtual Company Company1 { get; set; }
+        public virtual ContactPerson ContactPerson { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

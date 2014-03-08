@@ -16,14 +16,12 @@ namespace Ramesoft.Cms.Common.Entity
     {
         public UserProfile()
         {
-            this.Histories = new HashSet<History>();
             this.webpages_Roles = new HashSet<webpages_Roles>();
         }
     
         public int UserId { get; set; }
         public string UserName { get; set; }
     
-        public virtual ICollection<History> Histories { get; set; }
         public virtual ICollection<webpages_Roles> webpages_Roles { get; set; }
     }
 }

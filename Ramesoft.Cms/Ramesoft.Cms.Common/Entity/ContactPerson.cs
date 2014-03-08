@@ -12,20 +12,22 @@ namespace Ramesoft.Cms.Common.Entity
     using System;
     using System.Collections.Generic;
     
-    public partial class Company
+    public partial class ContactPerson
     {
-        public Company()
+        public ContactPerson()
         {
+            this.Companies = new HashSet<Company>();
             this.Orders = new HashSet<Order>();
-            this.Orders1 = new HashSet<Order>();
-            this.ContactPersons = new HashSet<ContactPerson>();
         }
     
-        public int CompanyID { get; set; }
-        public string CompanyName { get; set; }
-        public Nullable<int> PrimaryContact { get; set; }
-        public string Web { get; set; }
-        public string Email { get; set; }
+        public int ContactID { get; set; }
+        public string Title { get; set; }
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
+        public Nullable<int> CompanyID { get; set; }
+        public string HomePhone { get; set; }
+        public string MobilePhone { get; set; }
         public string AddressTitle { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
@@ -35,9 +37,8 @@ namespace Ramesoft.Cms.Common.Entity
         public string Phone { get; set; }
         public string Fax { get; set; }
     
-        public virtual ContactPerson ContactPerson { get; set; }
+        public virtual ICollection<Company> Companies { get; set; }
+        public virtual Company Company { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
-        public virtual ICollection<Order> Orders1 { get; set; }
-        public virtual ICollection<ContactPerson> ContactPersons { get; set; }
     }
 }

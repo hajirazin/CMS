@@ -23,8 +23,5 @@ namespace Ramesoft.Cms.Common.Entity
         public string NewValue { get; set; }
         public System.DateTime ModificationTime { get; set; }
         public string ModificationType { get; set; }
-    
-        public virtual Company Company { get; set; }
-        public virtual UserProfile UserProfile { get; set; }
     }
 }

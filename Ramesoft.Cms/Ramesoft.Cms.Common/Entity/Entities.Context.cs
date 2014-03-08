@@ -27,13 +27,15 @@ namespace Ramesoft.Cms.Common.Entity
     
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
+        public virtual DbSet<ContactPerson> ContactPersons { get; set; }
         public virtual DbSet<History> Histories { get; set; }
+        public virtual DbSet<Log> Logs { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<Product> Products { get; set; }
-        public virtual DbSet<SubCategory> SubCategories { get; set; }
         public virtual DbSet<UserProfile> UserProfiles { get; set; }
         public virtual DbSet<webpages_Membership> webpages_Membership { get; set; }
         public virtual DbSet<webpages_OAuthMembership> webpages_OAuthMembership { get; set; }
         public virtual DbSet<webpages_Roles> webpages_Roles { get; set; }
-        public virtual DbSet<Log> Logs { get; set; }
     }
 }

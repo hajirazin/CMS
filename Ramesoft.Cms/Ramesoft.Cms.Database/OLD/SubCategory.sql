@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[SubCategory]
+﻿CREATE TABLE [old].[SubCategory]
 (
 	SubCategoryId  int primary key identity(1,1),
 	SubCategoryName varchar(50) not null,

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ProductService.cs" company="">
-//   
+// <copyright file="ProductService.cs" company="ramesoft">
+//   ramesoft
 // </copyright>
 // <summary>
 //   The product service.
@@ -67,11 +67,11 @@ namespace Ramesoft.Cms.Common.Services.Service
         /// <summary>
         /// Gets the companies.
         /// </summary>
-        public IEnumerable<Company> Companies
+        public IList<Company> Companies
         {
             get
             {
-                DbSet<Company> query = this.unitOfWork.DataContext.Set<Company>();
+                var query = this.unitOfWork.DataContext.Set<Company>();
                 query.Load();
                 return query.Local;
             }
@@ -84,16 +84,15 @@ namespace Ramesoft.Cms.Common.Services.Service
         {
             get
             {
-                IQueryable<ProductModel> product =
+                var product =
                     this.productRepository.GetAll.Select(
                         p =>
                         new ProductModel
                             {
-                                SubCatagoryName = p.SubCategory.SubCategoryName, 
+                                SubCatagoryName = p.Category.CategoryName, 
                                 ProductName = p.ProductName, 
-                                ProductId = p.ProductId, 
-                                CatagoryName = p.SubCategory.Category.CategoryName, 
-                                CompanyName = p.Company.CompanyName
+                                ProductId = p.ProductID, 
+                                CatagoryName = p.Category.Category2.CategoryName
                             });
 
                 return product.ToList();
@@ -124,7 +123,7 @@ namespace Ramesoft.Cms.Common.Services.Service
         /// </param>
         public void Add(IEnumerable<ProductModel> products)
         {
-            foreach (ProductModel product in products)
+            foreach (var product in products)
             {
                 this.productRepository.Add(Mapper.Map<Product>(product));
             }

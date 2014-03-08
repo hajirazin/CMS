@@ -1,12 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CommonRepositories.cs" company="rs">
-//   rs
+// <copyright file="CommonRepositories.cs" company="">
+//   
 // </copyright>
 // <summary>
 //   The common repositories.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Ramesoft.Cms.Common.DAL.Implementation
 {
     using System;
@@ -15,14 +14,14 @@ namespace Ramesoft.Cms.Common.DAL.Implementation
     using Ramesoft.Cms.Common.Utility.Exceptions;
 
     /// <summary>
-    /// The common repositories.
+    ///     The common repositories.
     /// </summary>
     public class CommonRepositories : IDisposable
     {
         #region Fields
 
         /// <summary>
-        /// The database.
+        ///     The database.
         /// </summary>
         private readonly IEntityContext db;
 
@@ -46,7 +45,7 @@ namespace Ramesoft.Cms.Common.DAL.Implementation
         #region Public Methods and Operators
 
         /// <summary>
-        /// The dispose.
+        ///     The dispose.
         /// </summary>
         public virtual void Dispose()
         {

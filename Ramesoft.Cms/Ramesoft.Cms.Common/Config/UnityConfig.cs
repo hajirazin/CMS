@@ -126,13 +126,6 @@ namespace Ramesoft.Cms.Common.Config
         private static IWindsorContainer Configure()
         {
             container = new WindsorContainer();
-
-            ////container.Register(
-            ////Component.For<IEntityContext>().ImplementedBy<EntityContext>(),
-            ////Component.For<IUnitOfWork<Log>>().ImplementedBy<UnitOfWork<Log>>(),
-            ////Component.For<IUnitOfWork<Product>>().ImplementedBy<UnitOfWork<Product>>(),
-            ////Component.For<IProductService>().ImplementedBy<ProductService>(),
-            ////Component.For<CommonRepositories>().ImplementedBy<CommonRepositories>());
             container.Register(Classes.FromThisAssembly().Pick().WithServiceDefaultInterfaces().LifestyleTransient());
             return container;
         }

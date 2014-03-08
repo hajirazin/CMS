@@ -6,7 +6,6 @@
 //   The repository factory.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Ramesoft.Cms.Common.DAL.Factory
 {
     using System;
@@ -16,14 +15,14 @@ namespace Ramesoft.Cms.Common.DAL.Factory
     using Ramesoft.Cms.Common.Entity;
 
     /// <summary>
-    /// The repository factory.
+    ///     The repository factory.
     /// </summary>
     public static class RepositoryFactory
     {
         #region Static Fields
 
         /// <summary>
-        /// The dictionary.
+        ///     The dictionary.
         /// </summary>
         private static readonly IDictionary<Type, Func<IEntityContext, object>> dictionary =
             new Dictionary<Type, Func<IEntityContext, object>>();
@@ -33,12 +32,12 @@ namespace Ramesoft.Cms.Common.DAL.Factory
         #region Public Methods and Operators
 
         /// <summary>
-        /// The get repository factory.
+        ///     The get repository factory.
         /// </summary>
         /// <typeparam name="T">
         /// </typeparam>
         /// <returns>
-        /// The <see cref="Func"/>.
+        ///     The <see cref="Func" />.
         /// </returns>
         public static Func<IEntityContext, object> GetRepositoryFactory<T>() where T : class
         {
@@ -48,12 +47,12 @@ namespace Ramesoft.Cms.Common.DAL.Factory
         }
 
         /// <summary>
-        /// The get standerd repository.
+        ///     The get standerd repository.
         /// </summary>
         /// <typeparam name="T">
         /// </typeparam>
         /// <returns>
-        /// The <see cref="Func"/>.
+        ///     The <see cref="Func" />.
         /// </returns>
         public static Func<IEntityContext, IRepository<T>> GetStanderdRepository<T>() where T : class
         {
@@ -65,12 +64,12 @@ namespace Ramesoft.Cms.Common.DAL.Factory
         #region Methods
 
         /// <summary>
-        /// The add new value to dictionary.
+        ///     The add new value to dictionary.
         /// </summary>
         /// <typeparam name="T">
         /// </typeparam>
         /// <returns>
-        /// The <see cref="Func"/>.
+        ///     The <see cref="Func" />.
         /// </returns>
         private static Func<IEntityContext, object> AddNewValueToDictionary<T>() where T : class
         {

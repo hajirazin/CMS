@@ -16,12 +16,16 @@ namespace Ramesoft.Cms.Common.Entity
     {
         public Category()
         {
-            this.SubCategories = new HashSet<SubCategory>();
+            this.Category1 = new HashSet<Category>();
+            this.Products = new HashSet<Product>();
         }
     
-        public int CategoryId { get; set; }
+        public int CategoryID { get; set; }
         public string CategoryName { get; set; }
+        public Nullable<int> ParentCategory { get; set; }
     
-        public virtual ICollection<SubCategory> SubCategories { get; set; }
+        public virtual ICollection<Category> Category1 { get; set; }
+        public virtual Category Category2 { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
     }
 }

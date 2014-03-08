@@ -6,7 +6,6 @@
 //   The repository provider.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Ramesoft.Cms.Common.DAL.Factory
 {
     using System;
@@ -15,14 +14,14 @@ namespace Ramesoft.Cms.Common.DAL.Factory
     using Ramesoft.Cms.Common.Entity;
 
     /// <summary>
-    /// The repository provider.
+    ///     The repository provider.
     /// </summary>
     public class RepositoryProvider : IRepositoryProvider
     {
         #region Fields
 
         /// <summary>
-        /// The dictionary.
+        ///     The dictionary.
         /// </summary>
         private readonly Dictionary<Type, object> dictionary;
 
@@ -31,7 +30,7 @@ namespace Ramesoft.Cms.Common.DAL.Factory
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RepositoryProvider"/> class.
+        ///     Initializes a new instance of the <see cref="RepositoryProvider" /> class.
         /// </summary>
         public RepositoryProvider()
         {
@@ -43,7 +42,7 @@ namespace Ramesoft.Cms.Common.DAL.Factory
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the data context.
+        ///     Gets or sets the data context.
         /// </summary>
         public IEntityContext DataContext { get; set; }
 
@@ -52,12 +51,12 @@ namespace Ramesoft.Cms.Common.DAL.Factory
         #region Public Methods and Operators
 
         /// <summary>
-        /// The get repository.
+        ///     The get repository.
         /// </summary>
         /// <typeparam name="T">
         /// </typeparam>
         /// <returns>
-        /// The <see cref="T"/>.
+        ///     The <see cref="T" />.
         /// </returns>
         public T GetRepository<T>() where T : class
         {
@@ -67,12 +66,12 @@ namespace Ramesoft.Cms.Common.DAL.Factory
         }
 
         /// <summary>
-        /// The get standerd repository.
+        ///     The get standerd repository.
         /// </summary>
         /// <typeparam name="T">
         /// </typeparam>
         /// <returns>
-        /// The <see cref="IRepository"/>.
+        ///     The <see cref="IRepository" />.
         /// </returns>
         public IRepository<T> GetStanderdRepository<T>() where T : class
         {
@@ -86,12 +85,12 @@ namespace Ramesoft.Cms.Common.DAL.Factory
         #region Methods
 
         /// <summary>
-        /// The make repository.
+        ///     The make repository.
         /// </summary>
         /// <typeparam name="T">
         /// </typeparam>
         /// <returns>
-        /// The <see cref="T"/>.
+        ///     The <see cref="T" />.
         /// </returns>
         private T MakeRepository<T>() where T : class
         {
@@ -102,12 +101,12 @@ namespace Ramesoft.Cms.Common.DAL.Factory
         }
 
         /// <summary>
-        /// The make standerd repository.
+        ///     The make standerd repository.
         /// </summary>
         /// <typeparam name="T">
         /// </typeparam>
         /// <returns>
-        /// The <see cref="IRepository"/>.
+        ///     The <see cref="IRepository" />.
         /// </returns>
         private IRepository<T> MakeStanderdRepository<T>() where T : class
         {

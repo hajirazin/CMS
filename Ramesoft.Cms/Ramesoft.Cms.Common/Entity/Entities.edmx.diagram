@@ -5,23 +5,29 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="841dddb1a0d645beb06d09fae9e7e167" Name="Diagram1">
-        <EntityTypeShape EntityType="RamrsoftCMSModel.Category" Width="1.5" PointX="7.75" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="RamrsoftCMSModel.Company" Width="1.5" PointX="3" PointY="5.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="RamrsoftCMSModel.History" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="RamrsoftCMSModel.Product" Width="1.5" PointX="5.25" PointY="9.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="RamrsoftCMSModel.SubCategory" Width="1.5" PointX="10" PointY="0.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="RamrsoftCMSModel.UserProfile" Width="1.5" PointX="3" PointY="1.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="RamrsoftCMSModel.webpages_Membership" Width="1.5" PointX="7.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="RamrsoftCMSModel.webpages_OAuthMembership" Width="1.5" PointX="7.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="RamrsoftCMSModel.webpages_Roles" Width="1.5" PointX="0.75" PointY="1.75" IsExpanded="true" />
-        <AssociationConnector Association="RamrsoftCMSModel.FK_SubCategory_Category" ManuallyRouted="false" />
-        <AssociationConnector Association="RamrsoftCMSModel.FK_History_Company" ManuallyRouted="false" />
-        <AssociationConnector Association="RamrsoftCMSModel.FK_Product_ToCompany" ManuallyRouted="false" />
-        <AssociationConnector Association="RamrsoftCMSModel.FK_History_User" ManuallyRouted="false" />
-        <AssociationConnector Association="RamrsoftCMSModel.webpages_UsersInRoles" ManuallyRouted="false" />
-        <AssociationConnector Association="RamrsoftCMSModel.FK_Product_ToSubCategory" />
-        <EntityTypeShape EntityType="RamrsoftCMSModel.Log" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="RamrsoftCMSModel.Category" Width="1.5" PointX="3" PointY="2.625" />
+        <EntityTypeShape EntityType="RamrsoftCMSModel.Company" Width="1.5" PointX="0.75" PointY="3.5" />
+        <EntityTypeShape EntityType="RamrsoftCMSModel.ContactPerson" Width="1.5" PointX="3" PointY="7.375" />
+        <EntityTypeShape EntityType="RamrsoftCMSModel.History" Width="1.5" PointX="9.75" PointY="3.75" />
+        <EntityTypeShape EntityType="RamrsoftCMSModel.Log" Width="1.5" PointX="7.75" PointY="0.75" />
+        <EntityTypeShape EntityType="RamrsoftCMSModel.OrderDetail" Width="1.5" PointX="7.5" PointY="6.625" />
+        <EntityTypeShape EntityType="RamrsoftCMSModel.Order" Width="1.5" PointX="5.25" PointY="6.125" />
+        <EntityTypeShape EntityType="RamrsoftCMSModel.Product" Width="1.5" PointX="5.25" PointY="2.25" />
+        <EntityTypeShape EntityType="RamrsoftCMSModel.UserProfile" Width="1.5" PointX="12" PointY="0.875" />
+        <EntityTypeShape EntityType="RamrsoftCMSModel.webpages_Membership" Width="1.5" PointX="9.75" PointY="7.75" />
+        <EntityTypeShape EntityType="RamrsoftCMSModel.webpages_OAuthMembership" Width="1.5" PointX="5.75" PointY="10.75" />
+        <EntityTypeShape EntityType="RamrsoftCMSModel.webpages_Roles" Width="1.5" PointX="9.75" PointY="0.875" />
+        <AssociationConnector Association="RamrsoftCMSModel.ProductCategories_Parent" />
+        <AssociationConnector Association="RamrsoftCMSModel.Products_Category" />
+        <AssociationConnector Association="RamrsoftCMSModel.Company_PrimaryContact" />
+        <AssociationConnector Association="RamrsoftCMSModel.Orders_Company" />
+        <AssociationConnector Association="RamrsoftCMSModel.Orders_ShipCompany" />
+        <AssociationConnector Association="RamrsoftCMSModel.PersonContact_Company" />
+        <AssociationConnector Association="RamrsoftCMSModel.Orders_Contact" />
         <AssociationConnector Association="RamrsoftCMSModel.FK_Log_ToLog" />
+        <AssociationConnector Association="RamrsoftCMSModel.OrderDetails_Order" />
+        <AssociationConnector Association="RamrsoftCMSModel.OrderDetails_Product" />
+        <AssociationConnector Association="RamrsoftCMSModel.webpages_UsersInRoles" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

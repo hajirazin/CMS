@@ -1,12 +1,11 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IRepository.cs" company="rs">
-//   rs
+// <copyright file="IRepository.cs" company="">
+//   
 // </copyright>
 // <summary>
 //   The Repository interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Ramesoft.Cms.Common.DAL.Factory
 {
     using System;
@@ -23,7 +22,7 @@ namespace Ramesoft.Cms.Common.DAL.Factory
         #region Public Properties
 
         /// <summary>
-        /// Gets the get all.
+        ///     Gets the get all.
         /// </summary>
         IQueryable<T> GetAll { get; }
 
@@ -59,7 +58,7 @@ namespace Ramesoft.Cms.Common.DAL.Factory
         void Remove(T item);
 
         /// <summary>
-        /// The save.
+        ///     The save.
         /// </summary>
         void Save();
 

@@ -89,6 +89,9 @@
     <Compile Include="Entity\Company.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity\ContactPerson.cs">
+      <DependentUpon>Entities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entity\Entities.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -112,10 +115,13 @@
     <Compile Include="Entity\Log.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entity\Product.cs">
+    <Compile Include="Entity\Order.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entity\SubCategory.cs">
+    <Compile Include="Entity\OrderDetail.cs">
+      <DependentUpon>Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Product.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\UserProfile.cs">
@@ -139,6 +145,7 @@
     <Compile Include="DAL\Implementation\CommonRepositories.cs" />
     <Compile Include="Services\Contract\IProductService.cs" />
     <Compile Include="Services\Service\ProductService.cs" />
+    <Compile Include="Utility\Constants.cs" />
     <Compile Include="Utility\Exceptions\InvalidSqlCommandException.cs" />
     <Compile Include="Utility\Extensions.cs" />
   </ItemGroup>
