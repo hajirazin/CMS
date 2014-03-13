@@ -17,11 +17,13 @@ namespace Ramesoft.Cms.Common.Entity
         public UserProfile()
         {
             this.webpages_Roles = new HashSet<webpages_Roles>();
+            this.ContactPersons = new HashSet<ContactPerson>();
         }
     
         public int UserId { get; set; }
         public string UserName { get; set; }
     
         public virtual ICollection<webpages_Roles> webpages_Roles { get; set; }
+        public virtual ICollection<ContactPerson> ContactPersons { get; set; }
     }
 }

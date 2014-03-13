@@ -28,11 +28,11 @@ namespace Ramesoft.Cms.Common.Config
         /// </summary>
         public static void CreateMaps()
         {
-            Mapper.CreateMap<Product, ProductModel>()
-                .ForMember(s => s.CatagoryName, m => m.MapFrom(d => d.SubCategory.Category.CategoryName))
-                .ForMember(s => s.CompanyName, m => m.MapFrom(d => d.Company.CompanyName))
-                .ForMember(s => s.SubCatagoryName, m => m.MapFrom(d => d.SubCategory.SubCategoryName));
-            Mapper.CreateMap<IQueryable<Product>, IQueryable<ProductModel>>();
+            //Mapper.CreateMap<Product, ProductModel>()
+            //    .ForMember(s => s.CatagoryName, m => m.MapFrom(d => d.SubCategory.Category.CategoryName))
+            //    .ForMember(s => s.CompanyName, m => m.MapFrom(d => d.Company.CompanyName))
+            //    .ForMember(s => s.SubCatagoryName, m => m.MapFrom(d => d.SubCategory.SubCategoryName));
+            //Mapper.CreateMap<IQueryable<Product>, IQueryable<ProductModel>>();
         }
 
         #endregion

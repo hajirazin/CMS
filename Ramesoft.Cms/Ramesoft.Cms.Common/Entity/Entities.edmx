@@ -51,6 +51,7 @@
           <Property Name="Country" Type="varchar" MaxLength="20" />
           <Property Name="Phone" Type="varchar" MaxLength="25" />
           <Property Name="Fax" Type="varchar" MaxLength="25" />
+          <Property Name="UserId" Type="int" />
         </EntityType>
         <EntityType Name="History">
           <Key>
@@ -171,6 +172,18 @@
             </Principal>
             <Dependent Role="Company">
               <PropertyRef Name="PrimaryContact" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContactPerson_User">
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="0..1" />
+          <End Role="ContactPerson" Type="Self.ContactPerson" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ContactPerson">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -324,6 +337,10 @@
             <End Role="ContactPerson" EntitySet="ContactPerson" />
             <End Role="Company" EntitySet="Company" />
           </AssociationSet>
+          <AssociationSet Name="FK_ContactPerson_User" Association="Self.FK_ContactPerson_User">
+            <End Role="UserProfile" EntitySet="UserProfile" />
+            <End Role="ContactPerson" EntitySet="ContactPerson" />
+          </AssociationSet>
           <AssociationSet Name="FK_Log_ToLog" Association="Self.FK_Log_ToLog">
             <End Role="Log" EntitySet="Log" />
             <End Role="Log1" EntitySet="Log" />
@@ -430,6 +447,10 @@
             <End Role="webpages_Roles" EntitySet="webpages_Roles" />
             <End Role="UserProfile" EntitySet="UserProfiles" />
           </AssociationSet>
+          <AssociationSet Name="FK_ContactPerson_User" Association="RamrsoftCMSModel.FK_ContactPerson_User">
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+            <End Role="ContactPerson" EntitySet="ContactPersons" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Category">
           <Key>
@@ -487,6 +508,8 @@
           <NavigationProperty Name="Companies" Relationship="RamrsoftCMSModel.Company_PrimaryContact" FromRole="ContactPerson" ToRole="Company" />
           <NavigationProperty Name="Company" Relationship="RamrsoftCMSModel.PersonContact_Company" FromRole="ContactPerson" ToRole="Company" />
           <NavigationProperty Name="Orders" Relationship="RamrsoftCMSModel.Orders_Contact" FromRole="ContactPerson" ToRole="Order" />
+          <Property Name="UserId" Type="Int32" />
+          <NavigationProperty Name="UserProfile" Relationship="RamrsoftCMSModel.FK_ContactPerson_User" FromRole="ContactPerson" ToRole="UserProfile" />
         </EntityType>
         <EntityType Name="History">
           <Key>
@@ -568,6 +591,7 @@
           <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="56" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="webpages_Roles" Relationship="RamrsoftCMSModel.webpages_UsersInRoles" FromRole="UserProfile" ToRole="webpages_Roles" />
+          <NavigationProperty Name="ContactPersons" Relationship="RamrsoftCMSModel.FK_ContactPerson_User" FromRole="UserProfile" ToRole="ContactPerson" />
         </EntityType>
         <EntityType Name="webpages_Membership">
           <Key>
@@ -726,6 +750,18 @@
           <End Type="RamrsoftCMSModel.webpages_Roles" Role="webpages_Roles" Multiplicity="*" />
           <End Type="RamrsoftCMSModel.UserProfile" Role="UserProfile" Multiplicity="*" />
         </Association>
+        <Association Name="FK_ContactPerson_User">
+          <End Type="RamrsoftCMSModel.UserProfile" Role="UserProfile" Multiplicity="0..1" />
+          <End Type="RamrsoftCMSModel.ContactPerson" Role="ContactPerson" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserProfile">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ContactPerson">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -763,6 +799,7 @@
           <EntitySetMapping Name="ContactPersons">
             <EntityTypeMapping TypeName="RamrsoftCMSModel.ContactPerson">
               <MappingFragment StoreEntitySet="ContactPerson">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Fax" ColumnName="Fax" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="Country" ColumnName="Country" />

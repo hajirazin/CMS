@@ -1,11 +1,18 @@
-﻿@{
+﻿@using Ramesoft.Cms.Common.Utility
+@{
     ViewBag.Title = "SQL";
 }
+<script type="text/javascript">
+    var message = '@(TempData[Constants.SQLSuccess] ?? string.Empty)';
+    if (!!message) {
+        alert(message);
+    }
+</script>
 
 <h2>SQL</h2>
 @using (Html.BeginForm())
 {
-    <textarea id="command" name="command"></textarea>
-    <br />
+    <textarea id="command" name="command" rows="8" aria-multiline="true" cols="25"></textarea>
+    <br /><br /><br />
     <input type="submit" value="Execute" />
 }

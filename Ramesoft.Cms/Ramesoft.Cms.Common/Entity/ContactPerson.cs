@@ -36,9 +36,11 @@ namespace Ramesoft.Cms.Common.Entity
         public string Country { get; set; }
         public string Phone { get; set; }
         public string Fax { get; set; }
+        public Nullable<int> UserId { get; set; }
     
         public virtual ICollection<Company> Companies { get; set; }
         public virtual Company Company { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
+        public virtual UserProfile UserProfile { get; set; }
     }
 }

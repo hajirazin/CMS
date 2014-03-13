@@ -8,9 +8,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Ramesoft.Cms.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Data.Entity;
+    using System.Globalization;
     using System.Linq;
     using System.Web.Mvc;
 
@@ -24,6 +24,7 @@ namespace Ramesoft.Cms.Controllers
     /// <summary>
     ///     The products controller.
     /// </summary>
+    [Authorize]
     public class ProductsController : Controller
     {
         #region Fields
@@ -71,12 +72,12 @@ namespace Ramesoft.Cms.Controllers
         public ActionResult Create()
         {
             this.ViewBag.CompanyId = new SelectList(this.productService.Companies, "CompanyId", "CompanyName");
-            this.ViewBag.SubCategoryId = new SelectList(this.dataContext.Categories, "SubCategoryId", "SubCategoryName");
+            this.ViewBag.SubCategoryId = new SelectList(this.dataContext.Categories.Where(c => c.ParentCategory != null), "CategoryID", "CategoryName");
             this.ViewBag.CatagoryId =
-                new HashSet<Category>(this.dataContext.Categories).Select(
-                    c => new SelectListItem { Text = c.CategoryName, Value = c.CategoryID.ToString() });
+                new HashSet<Category>(this.dataContext.Categories.Where(c => c.ParentCategory == null)).Select(
+                    c => new SelectListItem { Text = c.CategoryName, Value = c.CategoryID.ToString(CultureInfo.InvariantCulture) });
             var products = new ProductList(this.productService.GetProducts);
-            return View(products);
+            return this.View(products);
         }
 
         // POST: /Products/Create
@@ -111,9 +112,9 @@ namespace Ramesoft.Cms.Controllers
             this.ViewBag.SubCategoryId = new SelectList(this.dataContext.Categories, "SubCategoryId", "SubCategoryName");
             this.ViewBag.CatagoryId =
                 new HashSet<Category>(this.dataContext.Categories).Select(
-                    c => new SelectListItem { Text = c.CategoryName, Value = c.CategoryID.ToString() });
+                    c => new SelectListItem { Text = c.CategoryName, Value = c.CategoryID.ToString(CultureInfo.InvariantCulture) });
 
-            return View(product);
+            return this.View(product);
         }
 
         // GET: /Products/Delete/5
@@ -135,7 +136,7 @@ namespace Ramesoft.Cms.Controllers
                 return this.HttpNotFound();
             }
 
-            return View(product);
+            return this.View(product);
         }
 
         // POST: /Products/Delete/5
@@ -176,7 +177,7 @@ namespace Ramesoft.Cms.Controllers
                 return this.HttpNotFound();
             }
 
-            return View(product);
+            return this.View(product);
         }
 
         /// <summary>
@@ -206,7 +207,7 @@ namespace Ramesoft.Cms.Controllers
                 "SubCategoryId", 
                 "SubCategoryName", 
                 product.CategoryID);
-            return View(product);
+            return this.View(product);
         }
 
         /// <summary>
@@ -239,7 +240,7 @@ namespace Ramesoft.Cms.Controllers
                 "SubCategoryId", 
                 "SubCategoryName", 
                 product.CategoryID);
-            return View(product);
+            return this.View(product);
         }
 
         /// <summary>

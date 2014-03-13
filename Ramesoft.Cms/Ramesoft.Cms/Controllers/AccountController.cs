@@ -9,11 +9,12 @@
 
 namespace Ramesoft.Cms.Controllers
 {
+    using System.Linq;
     using System.Web.Mvc;
-    using System.Web.Security;
 
     using Microsoft.Web.WebPages.OAuth;
 
+    using Ramesoft.Cms.Common.Entity;
     using Ramesoft.Cms.Models;
 
     using WebMatrix.WebData;
@@ -302,6 +303,11 @@ namespace Ramesoft.Cms.Controllers
         {
             if (this.ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, model.RememberMe))
             {
+                var m = new EntityContext();
+                this.Session["CompanyId"] =
+                    m.ContactPersons.Where(c => c.UserId == WebSecurity.CurrentUserId)
+                        .Select(s => s.CompanyID)
+                        .FirstOrDefault() ?? 0;
                 return this.RedirectToLocal(returnUrl);
             }
 

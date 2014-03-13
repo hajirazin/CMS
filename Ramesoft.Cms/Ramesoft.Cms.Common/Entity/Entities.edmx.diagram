@@ -28,6 +28,7 @@
         <AssociationConnector Association="RamrsoftCMSModel.OrderDetails_Order" />
         <AssociationConnector Association="RamrsoftCMSModel.OrderDetails_Product" />
         <AssociationConnector Association="RamrsoftCMSModel.webpages_UsersInRoles" />
+        <AssociationConnector Association="RamrsoftCMSModel.FK_ContactPerson_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

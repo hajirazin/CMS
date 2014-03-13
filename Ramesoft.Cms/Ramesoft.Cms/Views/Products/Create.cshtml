@@ -71,7 +71,7 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
-        var a = @i
+        var a = @i;
         $("#AddProduct").click(function (e) {
             var str = '@Html.PartialList("MyPartial")'.replace(/#=Id#/g, a++);
             $("#Products tbody").append(str);

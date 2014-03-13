@@ -47,11 +47,13 @@ namespace Ramesoft.Cms.Filters
         /// </param>
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (filterContext.ActionDescriptor.ControllerDescriptor.ControllerName != "Error")
+            if (filterContext.ActionDescriptor.ControllerDescriptor.ControllerName == "Error")
             {
-                LazyInitializer.EnsureInitialized(ref initializer, ref isInitialized, ref initializerLock);
-                Logger.LogInfo("Action:" + filterContext.ActionDescriptor.ActionName + " of Controller:" + filterContext.ActionDescriptor.ControllerDescriptor.ControllerName + " is called.");
+                return;
             }
+
+            LazyInitializer.EnsureInitialized(ref initializer, ref isInitialized, ref initializerLock);
+            Logger.LogInfo("Action:" + filterContext.ActionDescriptor.ActionName + " of Controller:" + filterContext.ActionDescriptor.ControllerDescriptor.ControllerName + " is called.");
         }
 
         /// <summary>
@@ -79,6 +81,7 @@ namespace Ramesoft.Cms.Filters
                     if (!WebSecurity.UserExists("razinmemon"))
                     {
                         WebSecurity.CreateUserAndAccount("razinmemon", "ABab@123");
+
                         if (!Roles.RoleExists(UserTypes.SuperAdmin.ToString()))
                         {
                             Roles.CreateRole(UserTypes.SuperAdmin.ToString());
