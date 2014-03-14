@@ -8,7 +8,9 @@
     [Price]             DECIMAL (10, 2) NULL,
     [DiscontinuedPrice] DECIMAL (10, 2) NULL,
     [Discontinued]      BIT             NULL,
+    [CompanyId] INT NULL, 
     PRIMARY KEY CLUSTERED ([ProductID] ASC),
-    CONSTRAINT [Products_Category] FOREIGN KEY ([CategoryID]) REFERENCES [dbo].[Category] ([CategoryID])
+    CONSTRAINT [Products_Category] FOREIGN KEY ([CategoryID]) REFERENCES [dbo].[Category] ([CategoryID]), 
+    CONSTRAINT [FK_Products_ToCompany] FOREIGN KEY ([COmpanyId]) REFERENCES [Company]([COmpanyId])
 );
 

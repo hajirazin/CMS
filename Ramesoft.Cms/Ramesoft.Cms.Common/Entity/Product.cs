@@ -28,8 +28,10 @@ namespace Ramesoft.Cms.Common.Entity
         public Nullable<decimal> Price { get; set; }
         public Nullable<decimal> DiscontinuedPrice { get; set; }
         public Nullable<bool> Discontinued { get; set; }
+        public Nullable<int> CompanyId { get; set; }
     
         public virtual Category Category { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        public virtual Company Company { get; set; }
     }
 }

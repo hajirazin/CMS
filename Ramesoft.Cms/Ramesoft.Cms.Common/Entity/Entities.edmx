@@ -115,6 +115,7 @@
           <Property Name="Price" Type="decimal" Precision="10" Scale="2" />
           <Property Name="DiscontinuedPrice" Type="decimal" Precision="10" Scale="2" />
           <Property Name="Discontinued" Type="bit" />
+          <Property Name="CompanyId" Type="int" />
         </EntityType>
         <EntityType Name="UserProfile">
           <Key>
@@ -196,6 +197,18 @@
             </Principal>
             <Dependent Role="Log1">
               <PropertyRef Name="InnerException" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_ToCompany">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -345,6 +358,10 @@
             <End Role="Log" EntitySet="Log" />
             <End Role="Log1" EntitySet="Log" />
           </AssociationSet>
+          <AssociationSet Name="FK_Products_ToCompany" Association="Self.FK_Products_ToCompany">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
           <AssociationSet Name="fk_RoleId" Association="Self.fk_RoleId">
             <End Role="webpages_Roles" EntitySet="webpages_Roles" />
             <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
@@ -451,6 +468,10 @@
             <End Role="UserProfile" EntitySet="UserProfiles" />
             <End Role="ContactPerson" EntitySet="ContactPersons" />
           </AssociationSet>
+          <AssociationSet Name="FK_Products_ToCompany" Association="RamrsoftCMSModel.FK_Products_ToCompany">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Category">
           <Key>
@@ -484,6 +505,7 @@
           <NavigationProperty Name="Orders" Relationship="RamrsoftCMSModel.Orders_Company" FromRole="Company" ToRole="Order" />
           <NavigationProperty Name="Orders1" Relationship="RamrsoftCMSModel.Orders_ShipCompany" FromRole="Company" ToRole="Order" />
           <NavigationProperty Name="ContactPersons" Relationship="RamrsoftCMSModel.PersonContact_Company" FromRole="Company" ToRole="ContactPerson" />
+          <NavigationProperty Name="Products" Relationship="RamrsoftCMSModel.FK_Products_ToCompany" FromRole="Company" ToRole="Product" />
         </EntityType>
         <EntityType Name="ContactPerson">
           <Key>
@@ -583,6 +605,8 @@
           <Property Name="Discontinued" Type="Boolean" />
           <NavigationProperty Name="Category" Relationship="RamrsoftCMSModel.Products_Category" FromRole="Product" ToRole="Category" />
           <NavigationProperty Name="OrderDetails" Relationship="RamrsoftCMSModel.OrderDetails_Product" FromRole="Product" ToRole="OrderDetail" />
+          <Property Name="CompanyId" Type="Int32" />
+          <NavigationProperty Name="Company" Relationship="RamrsoftCMSModel.FK_Products_ToCompany" FromRole="Product" ToRole="Company" />
         </EntityType>
         <EntityType Name="UserProfile">
           <Key>
@@ -762,6 +786,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Products_ToCompany">
+          <End Type="RamrsoftCMSModel.Company" Role="Company" Multiplicity="0..1" />
+          <End Type="RamrsoftCMSModel.Product" Role="Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -874,6 +910,7 @@
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="RamrsoftCMSModel.Product">
               <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="Discontinued" ColumnName="Discontinued" />
                 <ScalarProperty Name="DiscontinuedPrice" ColumnName="DiscontinuedPrice" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
