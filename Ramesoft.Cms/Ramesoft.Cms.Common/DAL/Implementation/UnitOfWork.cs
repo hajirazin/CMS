@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="UnitOfWork.cs" company="">
-//   
+// <copyright file="UnitOfWork.cs" company="rs">
+//   rs
 // </copyright>
 // <summary>
 //   The unit of work.
@@ -77,7 +77,7 @@ namespace Ramesoft.Cms.Common.DAL.Implementation
         /// <typeparam name="T">
         /// </typeparam>
         /// <returns>
-        /// The <see cref="IRepository"/>.
+        /// The <see cref="IRepository{T}"/>.
         /// </returns>
         public IRepository<T> GetStanderdRepository<T>() where T : class
         {

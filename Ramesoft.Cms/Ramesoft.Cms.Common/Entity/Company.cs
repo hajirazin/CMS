@@ -20,6 +20,7 @@ namespace Ramesoft.Cms.Common.Entity
             this.Orders1 = new HashSet<Order>();
             this.ContactPersons = new HashSet<ContactPerson>();
             this.Products = new HashSet<Product>();
+            this.Users = new HashSet<User>();
         }
     
         public int CompanyID { get; set; }
@@ -41,5 +42,6 @@ namespace Ramesoft.Cms.Common.Entity
         public virtual ICollection<Order> Orders1 { get; set; }
         public virtual ICollection<ContactPerson> ContactPersons { get; set; }
         public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

@@ -30,6 +30,10 @@
         <AssociationConnector Association="RamrsoftCMSModel.webpages_UsersInRoles" />
         <AssociationConnector Association="RamrsoftCMSModel.FK_ContactPerson_User" />
         <AssociationConnector Association="RamrsoftCMSModel.FK_Products_ToCompany" />
+        <EntityTypeShape EntityType="RamrsoftCMSModel.User" Width="1.5" PointX="3" PointY="13.625" />
+        <AssociationConnector Association="RamrsoftCMSModel.FK_Account_ToCompany" />
+        <EntityTypeShape EntityType="RamrsoftCMSModel.Role" Width="1.5" PointX="8.375" PointY="11.875" />
+        <AssociationConnector Association="RamrsoftCMSModel.FK_User_ToRoles" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

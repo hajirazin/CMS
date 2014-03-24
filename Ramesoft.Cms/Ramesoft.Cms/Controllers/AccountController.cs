@@ -10,11 +10,13 @@
 namespace Ramesoft.Cms.Controllers
 {
     using System.Linq;
+    using System.Net.Http;
     using System.Web.Mvc;
 
     using Microsoft.Web.WebPages.OAuth;
 
     using Ramesoft.Cms.Common.Entity;
+    using Ramesoft.Cms.Common.Models;
     using Ramesoft.Cms.Models;
 
     using WebMatrix.WebData;
@@ -23,7 +25,7 @@ namespace Ramesoft.Cms.Controllers
     /// The account controller.
     /// </summary>
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         #region Enums
 
@@ -301,14 +303,12 @@ namespace Ramesoft.Cms.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            if (this.ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, model.RememberMe))
+            if (this.ModelState.IsValid)
             {
-                var m = new EntityContext();
-                this.Session["CompanyId"] =
-                    m.ContactPersons.Where(c => c.UserId == WebSecurity.CurrentUserId)
-                        .Select(s => s.CompanyID)
-                        .FirstOrDefault() ?? 0;
-                return this.RedirectToLocal(returnUrl);
+                var response = this.Client.PostAsJsonAsync("/api/account/Login", model).Result;
+                var user = response.Content.ReadAsAsync<LoginResponse>().Result;
+                this.Session["UserDetail"] = user;
+                return this.RedirectToAction("Index", "Products");
             }
 
             // If we got this far, something failed, redisplay form

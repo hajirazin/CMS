@@ -51,16 +51,18 @@
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.0.2\lib\net40\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.0.2\lib\net40\EntityFramework.SqlServer.dll</HintPath>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net40\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -124,6 +126,12 @@
     <Compile Include="Entity\Product.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity\Role.cs">
+      <DependentUpon>Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\User.cs">
+      <DependentUpon>Entities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entity\UserProfile.cs">
       <DependentUpon>Entities.tt</DependentUpon>
     </Compile>
@@ -139,12 +147,15 @@
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\Contract\ISelectListItem.cs" />
+    <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\LoginResponse.cs" />
     <Compile Include="Models\ProductList.cs" />
     <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DAL\Implementation\CommonRepositories.cs" />
     <Compile Include="Services\Contract\IProductService.cs" />
     <Compile Include="Services\Service\ProductService.cs" />
+    <Compile Include="Utility\ConfigurationKeys.cs" />
     <Compile Include="Utility\Constants.cs" />
     <Compile Include="Utility\Exceptions\InvalidSqlCommandException.cs" />
     <Compile Include="Utility\Extensions.cs" />
